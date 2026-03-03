@@ -9,6 +9,7 @@ interface AuthSectionProps {
 export function AuthSection({ user }: AuthSectionProps) {
   if (user) {
     const displayName =
+      user.user_metadata?.name ??
       user.user_metadata?.user_name ??
       user.user_metadata?.login ??
       user.user_metadata?.full_name ??
