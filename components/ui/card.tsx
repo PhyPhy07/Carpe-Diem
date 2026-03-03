@@ -1,10 +1,10 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { addTodo } from "@/lib/actions/todo"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { TimePicker } from "./timePicker"
 
 function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -93,41 +93,50 @@ function CardDemo() {
       
       </CardHeader>
       <CardContent>
-        <form>
+        <form action={addTodo}>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
-              <Label htmlFor="email">What chu need to do?</Label>
+              <Label htmlFor="task">What chu need to do?</Label>
               <Input
                 id="task"
+                name="task"
                 type="text"
                 placeholder="Enter your task here"
                 required
               />
             </div>
-              <TimePicker />
-            
+            <div className="grid gap-2">
+              <Label htmlFor="status">Status</Label>
+              <select
+                id="status"
+                name="status"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              >
+                <option value="todo">To Do</option>
+                <option value="in_progress">In Progress</option>
+                <option value="done">Done</option>
+              </select>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="due_at">Due date & time</Label>
+              <Input
+                id="due_at"
+                name="due_at"
+                type="datetime-local"
+                className="w-full"
+              />
+            </div>  
+            <Button type="submit" className="w-full">
+              Add Task
+            </Button>
+            <Button variant="outline" type="button" className="w-full">
+              Cancel
+            </Button>
           </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex-col gap-2">
-        <Button type="submit" className="w-full">
-          Add Task
-        </Button>
-        <Button variant="outline" className="w-full">
-          Cancel
-        </Button>
-      </CardFooter>
-    </Card>
+          </form>
+        </CardContent>
+      </Card>
   )
 }
 
-export {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardAction,
-  CardDescription,
-  CardContent,
-  CardDemo,
-}
+export { CardDemo }
