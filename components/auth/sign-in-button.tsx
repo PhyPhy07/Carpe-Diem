@@ -1,18 +1,50 @@
 "use client";
 
+import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 export function SignInButton() {
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
   async function handleSignIn() {
-    const supabase = createClient();
-    await supabase.auth.signInWithOAuth({ provider: "github" });
+    setError(null);
+    setLoading(true);
+
+    try {
+      const supabase = createClient();
+      const { data, error: authError } = await supabase.auth.signInWithOAuth({
+        provider: "github",
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+
+      if (authError) {
+        setError(authError.message);
+        setLoading(false);
+        return;
+      }
+
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+      setLoading(false);
+    }
   }
 
   return (
-    <button
-      onClick={handleSignIn}
-      className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-zinc-900 px-5 text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 md:w-auto md:px-8"
-    >
+    <div className="flex flex-col items-center gap-2">
+      {error && (
+        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+      )}
+      <button
+        onClick={handleSignIn}
+        disabled={loading}
+        className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-zinc-900 px-5 text-white transition-colors hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 md:w-auto md:px-8"
+      >
       <svg
         className="h-5 w-5"
         fill="currentColor"
@@ -25,7 +57,8 @@ export function SignInButton() {
           clipRule="evenodd"
         />
       </svg>
-      Sign in with GitHub
+      {loading ? "Redirecting..." : "Sign in with GitHub"}
     </button>
+    </div>
   );
 }
