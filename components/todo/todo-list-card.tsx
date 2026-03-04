@@ -4,7 +4,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { TodoItem } from "@/components/todo-item";
+import { TodoItem } from "@/components/todo/todo-item";
 
 export type Todo = {
   id: string;

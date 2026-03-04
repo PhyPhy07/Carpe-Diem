@@ -5,8 +5,8 @@ import { useTransition } from "react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { updateTodoStatus, deleteTodo } from "@/lib/actions/todo";
-import { DeleteButton } from "@/components/delete-button";
-import type { Todo } from "@/components/todo-list-card";
+import { DeleteButton } from "@/components/todo/delete-button";
+import type { Todo } from "@/components/todo/todo-list-card";
 
 interface TodoItemProps {
   todo: Todo;

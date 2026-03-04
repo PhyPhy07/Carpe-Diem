@@ -2,7 +2,7 @@ import * as React from "react"
 import Image from "next/image"
 
 import { cn } from "@/lib/utils"
-import { addTodo } from "@/lib/actions/todo"
+import { addTodo } from "@/lib/actions/todo";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"

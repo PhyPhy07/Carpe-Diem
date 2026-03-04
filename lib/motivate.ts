@@ -24,7 +24,7 @@ const SPEAKER_ICONS: Record<string, string> = {
   "Tony Stark": "/iron-man.svg",
   "Steve Rogers": "/captain.svg",
   "Natasha Romanoff": "/spider.svg",
-  "Bruce Banner": "/hulk-PhotoRoom.svg",
+  "Bruce Banner": "/hulk-Photoroom.svg",
   "Clint Barton": "/captain.svg",
   Thor: "/mjolnir.svg",
   "T'Challa": "/blackpanther-Photoroom.svg",

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { getRandomMotivate, getSpeakerIcon } from "@/lib/motivate";
 import { getDisplayName } from "@/lib/user";
 import { CardDemo } from "@/components/ui/card";
-import { TodoListCard, type Todo } from "@/components/todo-list-card";
+import { TodoListCard, type Todo } from "@/components/todo/todo-list-card";
 
 function SpeakerIcon({ speaker }: { speaker: string }) {
   const icon = getSpeakerIcon(speaker);
