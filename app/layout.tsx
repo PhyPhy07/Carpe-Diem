@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { Arvo } from "next/font/google";
 import "./globals.css";
 import { AuthCodeRedirect } from "@/components/auth/auth-code-redirect";
+
+const arvo = Arvo({ weight: ["400", "700"], subsets: ["latin"], variable: "--font-arvo" });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,10 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className="font-sans antialiased"
-      >
+    <html lang="en" className={arvo.variable}>
+      <body className="font-sans antialiased">
         <Suspense fallback={null}>
           <AuthCodeRedirect />
         </Suspense>

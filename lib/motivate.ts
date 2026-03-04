@@ -24,12 +24,12 @@ const SPEAKER_ICONS: Record<string, string> = {
   "Tony Stark": "/iron-man.svg",
   "Steve Rogers": "/captain.svg",
   "Natasha Romanoff": "/spider.svg",
-  "Bruce Banner": "/captain.svg",
+  "Bruce Banner": "/hulk-PhotoRoom.svg",
   "Clint Barton": "/captain.svg",
   Thor: "/mjolnir.svg",
-  "T'Challa": "/blackpanther-PhotoRoom.svg",
-  "Pepper Potts": "/woman.svg",
-  phy: "/captain.svg",
+  "T'Challa": "/blackpanther-Photoroom.svg",
+  "Pepper Potts": "💁🏼‍♀️",
+  phy: "🎀",
 };
 
 export function getRandomMotivate(): { text: string; speaker: string } {

@@ -31,9 +31,22 @@ export function TodoItem({ todo }: TodoItemProps) {
 
   function handleStatusChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const newStatus = e.target.value;
-    startTransition(() => {
-      updateTodoStatus(todo.id, newStatus);
-    });
+    if (newStatus === "done") {
+      const wantsToDelete = window.confirm(
+        "Do you want to delete this task?"
+      );
+      startTransition(() => {
+        if (wantsToDelete) {
+          deleteTodo(todo.id);
+        } else {
+          updateTodoStatus(todo.id, "done");
+        }
+      });
+    } else {
+      startTransition(() => {
+        updateTodoStatus(todo.id, newStatus);
+      });
+    }
   }
 
   function handleDelete() {

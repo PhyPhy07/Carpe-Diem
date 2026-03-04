@@ -56,13 +56,25 @@ export default async function Home() {
               />
             </div>
             {user && motivation && (
-              <Image
-                src={getSpeakerIcon(motivation.speaker)}
-                alt={motivation.speaker}
-                width={40}
-                height={40}
-                className="ml-4"
-              />
+              (() => {
+                const icon = getSpeakerIcon(motivation.speaker);
+                if (icon.startsWith("/") || icon.startsWith("http")) {
+                  return (
+                    <Image
+                      src={icon}
+                      alt={motivation.speaker}
+                      width={40}
+                      height={40}
+                      className="ml-4 size-10 shrink-0 object-contain"
+                    />
+                  );
+                }
+                return (
+                  <span className="ml-4 flex size-10 shrink-0 items-center justify-center text-2xl" aria-label={motivation.speaker}>
+                    {icon}
+                  </span>
+                );
+              })()
             )}
           </div>
         </div>
