@@ -79,10 +79,12 @@ export default async function Home() {
           </div>
         </div>
 
-        <div className="flex w-full flex-col gap-6">
-          <CardDemo />
-          {user && <TodoListCard todos={todos} />}
-        </div>
+        {user && (
+          <div className="flex w-full flex-col gap-6">
+            <CardDemo />
+            <TodoListCard todos={todos} />
+          </div>
+        )}
         <div className="flex w-full flex-col gap-4 text-base font-medium md:flex-row">
           <AuthSection user={user} />
         </div>
