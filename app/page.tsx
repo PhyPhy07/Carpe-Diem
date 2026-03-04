@@ -2,8 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { AuthSection } from "@/components/auth/auth-section";
 import { getRandomMotivate } from "@/lib/motivate";
 import { CardDemo } from "@/components/ui/card";
-import { TimePicker } from "@/components/ui/timePicker";
-
+import { TodoListCard, type Todo } from "@/components/todo-list-card";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -19,7 +18,19 @@ export default async function Home() {
     user?.user_metadata?.full_name ??
     user?.email ??
     null;
-  const card = <CardDemo />
+  let todos: Todo[] = [];
+  if (user) {
+    const { data } = await supabase
+      .from("todos")
+      .select("id, title, status, due_at, priority")
+      .order("created_at", { ascending: false });
+    const raw = data ?? [];
+    todos = [...raw].sort((a, b) => {
+      const aDue = a.due_at ? new Date(a.due_at).getTime() : Infinity;
+      const bDue = b.due_at ? new Date(b.due_at).getTime() : Infinity;
+      return aDue - bDue;
+    });
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -33,11 +44,12 @@ export default async function Home() {
             {user ? getRandomMotivate() : "Sign in with GitHub to get started."}
           </p>
         </div>
-     
-        <div className="w-full flex flex-col gap-4 text-base font-medium md:flex-row">
-          {card}
+
+        <div className="flex w-full flex-col gap-6">
+          <CardDemo />
+          {user && <TodoListCard todos={todos} />}
         </div>
-        <div className="w-full flex flex-col gap-4 text-base font-medium md:flex-row">
+        <div className="flex w-full flex-col gap-4 text-base font-medium md:flex-row">
           <AuthSection user={user} />
         </div>
       </main>

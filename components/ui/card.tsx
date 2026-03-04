@@ -100,6 +100,7 @@ function CardDemo() {
               type="checkbox"
               name="priority"
               value="true"
+              form="add-task-form"
               className="peer sr-only"
               aria-label="Mark as high priority"
             />
@@ -114,7 +115,7 @@ function CardDemo() {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <form action={addTodo}>
+        <form id="add-task-form" action={addTodo}>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="task">What chu need to do?</Label>
@@ -126,18 +127,7 @@ function CardDemo() {
                 required
               />
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="status">Status</Label>
-              <select
-                id="status"
-                name="status"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              >
-                <option value="todo">To Do</option>
-                <option value="in_progress">In Progress</option>
-                <option value="done">Done</option>
-              </select>
-            </div>
+           
             <div className="grid gap-2">
               <Label htmlFor="due_at">Due date & time</Label>
               <Input
@@ -160,4 +150,10 @@ function CardDemo() {
   )
 }
 
-export { CardDemo }
+export {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDemo,
+}
