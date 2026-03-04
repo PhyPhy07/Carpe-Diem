@@ -41,6 +41,7 @@ export default async function Home() {
     const { data } = await supabase
       .from("todos")
       .select("id, title, status, due_at, priority")
+      .eq("user_id", user.id)
       .order("created_at", { ascending: false });
     const raw = data ?? [];
     todos = [...raw].sort((a, b) => {
