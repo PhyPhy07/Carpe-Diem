@@ -15,12 +15,14 @@ export async function addTodo(formData: FormData) {
     statusRaw === "in_progress" || statusRaw === "done" ? statusRaw : "todo";
   const title = formData.get("task") as string;
   const due_at = formData.get("due_at") as string | null;
+  const priority = formData.get("priority") === "true";
 
   const { error } = await supabase.from("todos").insert({
     user_id: user.id,
     title,
     status,
     due_at: due_at || null,
+    priority,
   });
 
   if (error) {

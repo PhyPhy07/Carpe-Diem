@@ -1,4 +1,5 @@
 import * as React from "react"
+import Image from "next/image"
 
 import { cn } from "@/lib/utils"
 import { addTodo } from "@/lib/actions/todo"
@@ -90,7 +91,27 @@ function CardDemo() {
     <Card className="w-full max-w-3xl">
       <CardHeader>
         <CardTitle>Add a New Task</CardTitle>
-      
+        <CardAction>
+          <label
+            className="relative flex cursor-pointer items-center transition-opacity hover:opacity-90"
+            title="Mark as high priority"
+          >
+            <input
+              type="checkbox"
+              name="priority"
+              value="true"
+              className="peer sr-only"
+              aria-label="Mark as high priority"
+            />
+            <Image
+              src="/captain.svg"
+              alt="High priority"
+              width={32}
+              height={32}
+              className="rounded-full transition-all ring-2 ring-transparent ring-offset-2 peer-checked:ring-amber-500"
+            />
+          </label>
+        </CardAction>
       </CardHeader>
       <CardContent>
         <form action={addTodo}>
