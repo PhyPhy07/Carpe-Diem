@@ -22,7 +22,7 @@ export function TodoListCard({ todos }: TodoListCardProps) {
   return (
     <Card className="w-full max-w-3xl">
       <CardHeader>
-        <CardTitle>My Tasks</CardTitle>
+        <CardTitle className="text-2xl font-bold">Get shit done:</CardTitle>
       </CardHeader>
       <CardContent>
         {todos.length === 0 ? (
