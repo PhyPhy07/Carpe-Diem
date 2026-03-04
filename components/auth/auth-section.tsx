@@ -1,4 +1,5 @@
 import type { User } from "@supabase/supabase-js";
+import Image from "next/image";
 import { SignInButton } from "./sign-in-button";
 import { SignOutButton } from "./sign-out-button";
 
@@ -26,5 +27,16 @@ export function AuthSection({ user }: AuthSectionProps) {
     );
   }
 
-  return <SignInButton />;
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <Image
+        src="/super.svg"
+        alt=""
+        width={120}
+        height={120}
+        className="object-contain"
+      />
+      <SignInButton />
+    </div>
+  );
 }

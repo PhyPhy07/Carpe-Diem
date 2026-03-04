@@ -39,8 +39,11 @@ export default async function Home() {
       className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/marvel.jpg')" }}
     >
-      <main className="flex min-h-[calc(100vh-3rem)] w-full max-w-3xl flex-col items-center justify-between py-32 px-16 m-6 bg-amber-50 dark:bg-zinc-900 sm:items-start rounded-xl border-4 border-black dark:border-zinc-100 shadow-[6px_6px_0_0_rgba(0,0,0,0.9)] dark:shadow-[6px_6px_0_0_rgba(255,255,255,0.2)]">
-
+      <main
+        className={`flex min-h-[calc(100vh-3rem)] w-full max-w-3xl flex-col py-32 px-16 m-6 bg-amber-50 dark:bg-zinc-900 rounded-xl border-4 border-black dark:border-zinc-100 shadow-[6px_6px_0_0_rgba(0,0,0,0.9)] dark:shadow-[6px_6px_0_0_rgba(255,255,255,0.2)] ${
+          user ? "items-center justify-between sm:items-start" : "items-center justify-center gap-8"
+        }`}
+      >
         <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
           <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
             {user && displayName ? `${greeting}, ${displayName}!` : "Carpe Diem"}
@@ -85,7 +88,7 @@ export default async function Home() {
             <TodoListCard todos={todos} />
           </div>
         )}
-        <div className="flex w-full flex-col gap-4 text-base font-medium md:flex-row">
+        <div className={`flex flex-col gap-4 text-base font-medium ${user ? "w-full md:flex-row" : "items-center"}`}>
           <AuthSection user={user} />
         </div>
       </main>
