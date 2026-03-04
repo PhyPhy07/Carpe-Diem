@@ -44,7 +44,7 @@ export function EmailPasswordAuth() {
       } else if (mode === "forgot") {
         const { error: resetError } = await supabase.auth.resetPasswordForEmail(
           email,
-          { redirectTo: `${redirectTo}?next=/auth/reset-password` }
+          { redirectTo: `${window.location.origin}/auth/reset-password` }
         );
 
         if (resetError) {
