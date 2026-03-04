@@ -1,9 +1,31 @@
 import { createClient } from "@/lib/supabase/server";
 import { AuthSection } from "@/components/auth/auth-section";
+import { DisplayNameSync } from "@/components/auth/display-name-sync";
 import Image from "next/image";
 import { getRandomMotivate, getSpeakerIcon } from "@/lib/motivate";
+import { getDisplayName } from "@/lib/user";
 import { CardDemo } from "@/components/ui/card";
 import { TodoListCard, type Todo } from "@/components/todo-list-card";
+
+function SpeakerIcon({ speaker }: { speaker: string }) {
+  const icon = getSpeakerIcon(speaker);
+  if (icon.startsWith("/") || icon.startsWith("http")) {
+    return (
+      <Image
+        src={icon}
+        alt={speaker}
+        width={40}
+        height={40}
+        className="ml-4 size-10 shrink-0 object-contain"
+      />
+    );
+  }
+  return (
+    <span className="ml-4 flex size-10 shrink-0 items-center justify-center text-2xl" aria-label={speaker}>
+      {icon}
+    </span>
+  );
+}
 
 export default async function Home() {
   const supabase = await createClient();
@@ -12,13 +34,7 @@ export default async function Home() {
 
   const greeting =
     timeOfDay < 12 ? "Good Morning" : timeOfDay < 18 ? "Good Afternoon" : "Good Evening";
-  const displayName =
-    user?.user_metadata?.name ??
-    user?.user_metadata?.user_name ??
-    user?.user_metadata?.login ??
-    user?.user_metadata?.full_name ??
-    user?.email ??
-    null;
+  const displayName = getDisplayName(user);
   const motivation = user ? getRandomMotivate() : null;
   let todos: Todo[] = [];
   if (user) {
@@ -51,7 +67,7 @@ export default async function Home() {
           <div className="flex flex-col items-start gap-2">
             <div className="relative max-w-md">
               <p className="relative rounded-2xl border-2 border-black dark:border-zinc-100 bg-white dark:bg-zinc-800 px-5 py-4 text-lg leading-8 text-zinc-700 dark:text-zinc-300 shadow-[3px_3px_0_0_rgba(0,0,0,0.8)] dark:shadow-[3px_3px_0_0_rgba(255,255,255,0.2)]">
-                {user && motivation ? motivation.text : "Sign in with GitHub to get started."}
+                {user && motivation ? motivation.text : "Sign in to get started."}
               </p>
               <div
                 className="absolute -bottom-2 left-8 size-0 border-l-[10px] border-r-[10px] border-t-[12px] border-l-transparent border-r-transparent border-t-white dark:border-t-zinc-800"
@@ -59,25 +75,7 @@ export default async function Home() {
               />
             </div>
             {user && motivation && (
-              (() => {
-                const icon = getSpeakerIcon(motivation.speaker);
-                if (icon.startsWith("/") || icon.startsWith("http")) {
-                  return (
-                    <Image
-                      src={icon}
-                      alt={motivation.speaker}
-                      width={40}
-                      height={40}
-                      className="ml-4 size-10 shrink-0 object-contain"
-                    />
-                  );
-                }
-                return (
-                  <span className="ml-4 flex size-10 shrink-0 items-center justify-center text-2xl" aria-label={motivation.speaker}>
-                    {icon}
-                  </span>
-                );
-              })()
+              <SpeakerIcon speaker={motivation.speaker} />
             )}
           </div>
         </div>
@@ -89,6 +87,7 @@ export default async function Home() {
           </div>
         )}
         <div className={`flex flex-col gap-4 text-base font-medium ${user ? "w-full md:flex-row" : "items-center"}`}>
+          {user && <DisplayNameSync />}
           <AuthSection user={user} />
         </div>
       </main>

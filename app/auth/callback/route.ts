@@ -1,26 +1,46 @@
+import { type EmailOtpType } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+
+function getRedirectUrl(request: Request, next: string): string {
+  const { origin } = new URL(request.url);
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  const isLocalEnv = process.env.NODE_ENV === "development";
+
+  if (isLocalEnv) {
+    return `${origin}${next}`;
+  }
+  if (forwardedHost) {
+    return `https://${forwardedHost}${next}`;
+  }
+  return `${origin}${next}`;
+}
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/";
+  const token_hash = searchParams.get("token_hash");
+  const type = searchParams.get("type") as EmailOtpType | null;
+  const _next = searchParams.get("next");
+  const next = _next?.startsWith("/") ? _next : "/";
 
+  const supabase = await createClient();
+
+  // OAuth callback (GitHub, Google, etc.)
   if (code) {
-    const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
-
     if (!error) {
-      const forwardedHost = request.headers.get("x-forwarded-host");
-      const isLocalEnv = process.env.NODE_ENV === "development";
+      return NextResponse.redirect(getRedirectUrl(request, next));
+    }
+  }
 
-      if (isLocalEnv) {
-        return NextResponse.redirect(`${origin}${next}`);
-      } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`);
-      } else {
-        return NextResponse.redirect(`${origin}${next}`);
-      }
+  // Email confirmation (signup, recovery, etc.)
+  if (token_hash && type) {
+    const { error } = await supabase.auth.verifyOtp({ type, token_hash });
+    if (!error) {
+      // For password recovery, send user to set new password
+      const redirectPath = type === "recovery" ? "/auth/reset-password" : next;
+      return NextResponse.redirect(getRedirectUrl(request, redirectPath));
     }
   }
 
