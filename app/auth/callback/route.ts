@@ -30,7 +30,9 @@ export async function GET(request: Request) {
   if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      return NextResponse.redirect(getRedirectUrl(request, next));
+      const url = getRedirectUrl(request, next);
+      const sep = url.includes("?") ? "&" : "?";
+      return NextResponse.redirect(`${url}${sep}welcome=1`);
     }
   }
 
@@ -40,7 +42,12 @@ export async function GET(request: Request) {
     if (!error) {
       // For password recovery, send user to set new password
       const redirectPath = type === "recovery" ? "/auth/reset-password" : next;
-      return NextResponse.redirect(getRedirectUrl(request, redirectPath));
+      const url = getRedirectUrl(request, redirectPath);
+      if (type !== "recovery") {
+        const sep = url.includes("?") ? "&" : "?";
+        return NextResponse.redirect(`${url}${sep}welcome=1`);
+      }
+      return NextResponse.redirect(url);
     }
   }
 

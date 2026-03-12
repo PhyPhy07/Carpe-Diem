@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { AuthSection } from "@/components/auth/auth-section";
 import { DisplayNameSync } from "@/components/auth/display-name-sync";
+import { WelcomeSound } from "@/components/auth/welcome-sound";
 import Image from "next/image";
 import { getRandomMotivate, getSpeakerIcon } from "@/lib/motivate";
 import { getDisplayName } from "@/lib/user";
@@ -82,10 +84,15 @@ export default async function Home() {
         </div>
 
         {user && (
-          <div className="flex w-full flex-col gap-6">
-            <CardDemo />
-            <TodoListCard todos={todos} />
-          </div>
+          <>
+            <Suspense fallback={null}>
+              <WelcomeSound />
+            </Suspense>
+            <div className="flex w-full flex-col gap-6">
+              <CardDemo />
+              <TodoListCard todos={todos} />
+            </div>
+          </>
         )}
         <div className={`flex flex-col gap-4 text-base font-medium ${user ? "w-full md:flex-row" : "items-center"}`}>
           {user && <DisplayNameSync />}

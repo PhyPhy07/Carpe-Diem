@@ -66,6 +66,7 @@ export function EmailPasswordAuth() {
           return;
         }
 
+        window.history.replaceState(null, "", "/?welcome=1");
         router.refresh();
       }
     } catch (err) {
